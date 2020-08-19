@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 const client = new Client();
 const prefix = '!';
 
-const k = 'RGAPI-3c385c11-c8b6-4c72-a77c-c5c44751f1c6';
+const k = 'RGAPI-f7b139d8-6817-45d8-a13a-3b6909da6332';
 
 let players = new Map();
 
@@ -45,10 +45,29 @@ client.on('message', async message => {
                 }
             }
             const {tier, rank, summonerName, leaguePoints} = soloq;
-            const str = `${summonerName} is ${tier} ${rank} ${leaguePoints.toString()} lp.`;
-            message.channel.send(str);
+			const str = `${summonerName} is ${tier} ${rank} ${leaguePoints.toString()} lp.`;
+			message.channel.send(str);
+			tierImage(tier);
         });
-    }
+	}
+
+	async function tierImage(str)
+	{
+		let tierPieces = new Map();
+		tierPieces.set('IRON', 'https://i.imgur.com/pmkjo8T.png');
+		tierPieces.set('BRONZE', 'https://i.imgur.com/KnJMWka.png');
+		tierPieces.set('SILVER', 'https://i.imgur.com/fnLbprT.png');
+		tierPieces.set('GOLD', 'https://i.imgur.com/qdcHMVp.png');
+		tierPieces.set('PLATINUM', 'https://i.imgur.com/xR2R4mt.png');
+		tierPieces.set('DIAMOND', 'https://i.imgur.com/VG4Urmj.png');
+		tierPieces.set('MASTERS', 'https://i.imgur.com/HirESXG.png');
+		tierPieces.set('GRANDMASTER', 'https://i.imgur.com/Go0Ou9X.png');
+		tierPieces.set('CHALLENGER', 'https://i.imgur.com/mt3apd6.png');
+
+		message.channel.send(tierPieces.get(str));
+	}
+
 });
 
-client.login('NzQzNjM3NzYxNTg3ODA2MzY4.XzXkog.m2NY-KYt_McAo9c71Zenbtg2LEk');
+
+client.login('NzAzMTQ1MTE5NTY1NzQyMTgw.XqKU7A.OvDspY_Uwb7qEKgS53_OESOXyGY');
