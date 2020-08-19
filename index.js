@@ -1,4 +1,4 @@
-const { Client, MessageEmbed } = require('discord.js');
+const { Client, MessageEmbed, DiscordAPIError } = require('discord.js');
 const fetch = require('node-fetch');
 const client = new Client();
 const prefix = '!';
@@ -47,8 +47,9 @@ client.on('message', async message => {
             const {tier, rank, summonerName, leaguePoints} = soloq;
             const str = `${summonerName} is ${tier} ${rank} ${leaguePoints.toString()} lp.`;
             message.channel.send(str);
+            
         });
     }
 });
 
-client.login('NzQzNjM3NzYxNTg3ODA2MzY4.XzXkog.m2NY-KYt_McAo9c71Zenbtg2LEk');
+client.login('NzQzNjM3NzYxNTg3ODA2MzY4.XzXkog.txE08owJFPALoVWtBWdHTJ2IwmA');
