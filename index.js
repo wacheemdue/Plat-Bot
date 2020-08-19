@@ -1,9 +1,10 @@
 const { Client, MessageEmbed, DiscordAPIError, Channel } = require('discord.js');
+const dotenv = require('dotenv');
 const fetch = require('node-fetch');
 const client = new Client();
 const prefix = '!';
 
-const k = 'RGAPI-ca94eb1e-b923-4d97-b35d-5aa174158d23';
+dotenv.config({ path: './config/config.env' });
 
 let players = new Map();
 let tierPieces = new Map();
@@ -30,7 +31,7 @@ client.on('message', async message => {
     // ...
     if (command === 'add') {
         const ign = args.join(' ').toLowerCase();
-        const info = await fetch(`https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${ign}?api_key=${k}`).then(response => response.json());
+        const info = await fetch(`https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${ign}?api_key=${process.env.RIOT_KEY}`).then(response => response.json());
         players.set(ign, {id: info.id, profileIconId: info.profileIconId});
     }
 
@@ -46,7 +47,7 @@ client.on('message', async message => {
     if (command === 'ranks') {
         console.log(players);
         players.forEach( async (value, key) => {
-            const info = await fetch(`https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/${value.id}?api_key=${k}`).then(response => response.json());
+            const info = await fetch(`https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/${value.id}?api_key=${process.env.RIOT_KEY}`).then(response => response.json());
             let soloq = {};
             for (const element of info) {
                 if (element.queueType === 'RANKED_SOLO_5x5') {
@@ -71,5 +72,17 @@ client.on('message', async message => {
 	}
 });
 
+// Following code pings express server every <5 minutes to keep bot hosting active
+const http = require('http');
+const express = require('express');
+const app = express();
+app.get("/", (request, response) => {
+  console.log(Date.now() + " Ping Received");
+  response.sendStatus(200);
+});
+app.listen(process.env.PORT);
+setInterval(() => {
+  http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
+}, 280000);
 
-client.login('NzQzNjM3NzYxNTg3ODA2MzY4.XzXkog.txE08owJFPALoVWtBWdHTJ2IwmA');
+client.login(process.env.BOT_KEY);
