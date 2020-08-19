@@ -43,7 +43,7 @@ client.on('message', async message => {
                     soloq = element;
                     break;
                 }
-            }
+			}
         const {tier, rank, summonerName, leaguePoints} = soloq;
 		const str = `${summonerName} is ${tier} ${rank} ${leaguePoints.toString()} lp.`;
 		message.channel.send(str);
@@ -70,4 +70,4 @@ client.on('message', async message => {
 });
 
 
-client.login('NzAzMTQ1MTE5NTY1NzQyMTgw.XqKU7A.OvDspY_Uwb7qEKgS53_OESOXyGY');
+client.login('');
