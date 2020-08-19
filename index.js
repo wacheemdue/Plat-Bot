@@ -4,7 +4,7 @@ const fetch = require('node-fetch');
 const client = new Client();
 const prefix = '!';
 
-dotenv.config({ path: './config/config.env' });
+dotenv.config({ path: '.env' });
 
 let players = new Map();
 let tierPieces = new Map();
