@@ -29,7 +29,7 @@ client.on('message', async message => {
 	const command = args.shift().toLowerCase();
     // ...
     if (command === 'add') {
-        const ign = args.join(' ');
+        const ign = args.join(' ').toLowerCase();
         const info = await fetch(`https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${ign}?api_key=${k}`).then(response => response.json());
         players.set(ign, {id: info.id, profileIconId: info.profileIconId});
     }
@@ -69,9 +69,6 @@ client.on('message', async message => {
         message.channel.send(embed);
         });
 	}
-
-	
-
 });
 
 
