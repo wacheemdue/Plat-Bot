@@ -2,7 +2,7 @@ const { Client, MessageEmbed, DiscordAPIError, Channel } = require('discord.js')
 const dotenv = require('dotenv');
 const fetch = require('node-fetch');
 const client = new Client();
-const prefix = '-';
+const prefix = '$';
 
 dotenv.config({ path: '.env' });
 
