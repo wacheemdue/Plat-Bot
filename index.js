@@ -6,7 +6,8 @@ const prefix = '$';
 
 dotenv.config({ path: '.env' });
 
-let players = new Map();
+let global = {};
+
 let tierPieces = new Map();
 tierPieces.set('IRON', 'https://i.imgur.com/pmkjo8T.png');
 tierPieces.set('BRONZE', 'https://i.imgur.com/KnJMWka.png');
@@ -29,6 +30,11 @@ client.on('message', async message => {
 
 	const command = args.shift().toLowerCase();
     // ...
+
+    if (!(message.guild.id in global)) {
+        global[message.guild.id] = new Map();
+    }
+
     if (command === 'help') {
         const str = 
             "$add [summoner name] Adds a player to the list." +
@@ -45,8 +51,8 @@ client.on('message', async message => {
         if (info.status == 404) {
             message.channel.send('ERROR: player does not exist.' );
         }
-        else if(!players.has(ign)) {
-            players.set(ign, {id: info.id, profileIconId: info.profileIconId});
+        else if(!global[message.guild.id].has(ign)) {
+            global[message.guild.id].set(ign, {id: info.id, profileIconId: info.profileIconId});
             message.channel.send('Successfully added ' + ign + ".");
         }
         else {
@@ -56,20 +62,20 @@ client.on('message', async message => {
 
     if (command === 'delete') {
         const ign = args.join('').toLowerCase();
-        if (players.has(ign)) {
-            players.delete(ign);
+        if (global[message.guild.id].has(ign)) {
+            global[message.guild.id].delete(ign);
             message.channel.send('Successfully deleted ' + ign + ".");
         }
         else
         {
             message.channel.send('ERROR: player ' + ign + ' does not exist.');
         }
-        console.log(players);
+        console.log(global[message.guild.id]);
     }
 
     if (command === 'ranks') {
-        console.log(players);
-        players.forEach( async (value, key) => {
+        console.log(global[message.guild.id]);
+        global[message.guild.id].forEach( async (value, key) => {
             const info = await fetch(`https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/${value.id}?api_key=${process.env.RIOT_KEY}`).then(response => response.json());
             let soloq = {};
             for (const element of info) {
@@ -82,7 +88,7 @@ client.on('message', async message => {
             //formatting and sending embedded image
             const {tier, rank, summonerName, leaguePoints} = soloq;
             const s = summonerName.toLowerCase().replace(/ /g,'');
-            const profIcon = players.get(s).profileIconId.toString();
+            const profIcon = global[message.guild.id].get(s).profileIconId.toString();
             const str = `${tier} ${rank} ${leaguePoints.toString()} lp`;
             const embed = new MessageEmbed()
                 .setColor('#00c3ff')
