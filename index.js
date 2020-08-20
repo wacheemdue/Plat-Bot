@@ -42,7 +42,7 @@ client.on('message', async message => {
         const ign = args.join('').toLowerCase();
         const info = await fetch(`https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${ign}?api_key=${process.env.RIOT_KEY}`).then(response => response.json());
 
-        if (info.status === 404) {
+        if (info.status == 404) {
             message.channel.send('ERROR: player does not exist.' );
         }
         else if(!players.has(ign)) {
