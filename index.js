@@ -65,24 +65,11 @@ client.on('message', async message => {
              `http://ddragon.leagueoflegends.com/cdn/10.16.1/img/profileicon/${profIcon}.png`,
              `https://na.op.gg/summoner/userName=${summonerName}`)
             .setDescription(`https://na.op.gg/summoner/userName=${summonerName}`)
-            .setImage(tierPieces.get(tier));
+            .setThumbnail(tierPieces.get(tier));
 
         message.channel.send(embed);
         });
 	}
 });
-
-// Following code pings express server every <5 minutes to keep bot hosting active
-const http = require('http');
-const express = require('express');
-const app = express();
-app.get("/", (request, response) => {
-  console.log(Date.now() + " Ping Received");
-  response.sendStatus(200);
-});
-app.listen(process.env.PORT);
-setInterval(() => {
-  http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
-}, 280000);
 
 client.login(process.env.BOT_KEY);
