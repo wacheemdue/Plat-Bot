@@ -31,9 +31,9 @@ client.on('message', async message => {
     // ...
     if (command === 'help') {
         const str = 
-            "!add [summoner name] Adds a player to the list." +
-            "\n!delete [summoner name] Deletes a player from the list." +
-            "\n!ranks Lists all added players and their ranks."
+            "add [summoner name] Adds a player to the list." +
+            "\ndelete [summoner name] Deletes a player from the list." +
+            "\nranks Lists all added players and their ranks."
         message.channel.send(str);
     }
 
@@ -43,10 +43,10 @@ client.on('message', async message => {
         const info = await fetch(`https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${ign}?api_key=${process.env.RIOT_KEY}`).then(response => response.json());
         if(!players.has(ign)) {
             players.set(ign, {id: info.id, profileIconId: info.profileIconId});
-            message.channel.send('Successfully added ' + ign + '!');
+            message.channel.send('Successfully added ' + ign + ".");
         }
         else {
-            message.channel.send('ERROR: player ' + ign + ' already exists!' );
+            message.channel.send('ERROR: player ' + ign + ' already exists.' );
         }
     }
 
@@ -54,11 +54,11 @@ client.on('message', async message => {
         const ign = args.join(' ').toLowerCase();
         if (players.has(ign)) {
             players.delete(ign);
-            message.channel.send('Successfully added ' + ign + '!');
+            message.channel.send('Successfully deleted ' + ign + ".");
         }
         else
         {
-            message.channel.send('ERROR: player ' + ign + ' does not exist!');
+            message.channel.send('ERROR: player ' + ign + ' does not exist.');
         }
         console.log(players);
     }
