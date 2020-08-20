@@ -15,5 +15,5 @@ Removes the summoner from the list of ranks to display.
 Displays the ranks of all added summoners.
 
 
-### Hosted on Glitch.com: https://glitch.com/~witty-glib-bun
+### Hosted on Heroku at https://plat-bot.herokuapp.com/
 
