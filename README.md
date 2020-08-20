@@ -5,13 +5,13 @@ Invite PlatBot to your server with this link: https://discord.com/oauth2/authori
 
 
 ## Commands:
-**!add _[summoner name]_**
+**$add _[summoner name]_**
 Adds the summoner to the list of ranks to display.
 
-**!delete _[summoner name]_**
+**$delete _[summoner name]_**
 Removes the summoner from the list of ranks to display.
 
-**!ranks**
+**$ranks**
 Displays the ranks of all added summoners.
 
 
