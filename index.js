@@ -41,12 +41,13 @@ client.on('message', async message => {
     if (command === 'add') {
         const ign = args.join('').toLowerCase();
         const info = await fetch(`https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${ign}?api_key=${process.env.RIOT_KEY}`).then(response => response.json());
-        if(!players.has(ign) || info.status === 200) {
+
+        if (info.status === 404) {
+            message.channel.send('ERROR: player does not exist.' );
+        }
+        else if(!players.has(ign)) {
             players.set(ign, {id: info.id, profileIconId: info.profileIconId});
             message.channel.send('Successfully added ' + ign + ".");
-        }
-        else if (info.status === 404) {
-            message.channel.send('ERROR: player does not exist.' );
         }
         else {
             message.channel.send('ERROR: player ' + ign + ' already exists.' );
@@ -78,20 +79,21 @@ client.on('message', async message => {
                 }
             }
         
-        //formatting and sending embedded image
-        const {tier, rank, summonerName, leaguePoints} = soloq;
-        const profIcon = players.get(summonerName.toLowerCase()).profileIconId;
-		const str = `${tier} ${rank} ${leaguePoints.toString()} lp`;
-        const embed = new MessageEmbed()
-            .setColor('#00c3ff')
-            .setTitle(str)
-            .setAuthor(summonerName,
-             `http://ddragon.leagueoflegends.com/cdn/10.16.1/img/profileicon/${profIcon}.png`,
-             `https://na.op.gg/summoner/userName=${summonerName}`)
-            .setDescription(`https://na.op.gg/summoner/userName=${summonerName}`)
-            .setThumbnail(tierPieces.get(tier));
+            //formatting and sending embedded image
+            const {tier, rank, summonerName, leaguePoints} = soloq;
+            const s = summonerName.toLowerCase().replace(/ /g,'');
+            const profIcon = players.get(s).profileIconId.toString();
+            const str = `${tier} ${rank} ${leaguePoints.toString()} lp`;
+            const embed = new MessageEmbed()
+                .setColor('#00c3ff')
+                .setTitle(str)
+                .setAuthor(summonerName,
+                `http://ddragon.leagueoflegends.com/cdn/10.16.1/img/profileicon/${profIcon}.png`,
+                `https://na.op.gg/summoner/userName=${summonerName.replace(/ /g, '+')}`)
+                .setDescription(`https://na.op.gg/summoner/userName=${summonerName.replace(/ /g, '+')}`)
+                .setThumbnail(tierPieces.get(tier));
 
-        message.channel.send(embed);
+            message.channel.send(embed);
         });
 	}
 });
