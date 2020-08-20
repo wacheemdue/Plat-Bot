@@ -2,7 +2,7 @@ const { Client, MessageEmbed, DiscordAPIError, Channel } = require('discord.js')
 const dotenv = require('dotenv');
 const fetch = require('node-fetch');
 const client = new Client();
-const prefix = '!';
+const prefix = '-';
 
 dotenv.config({ path: '.env' });
 
@@ -38,7 +38,7 @@ client.on('message', async message => {
     }
 
 
-    if (command === 'add') {
+    if (command === 'ad') {
         const ign = args.join('').toLowerCase();
         const info = await fetch(`https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${ign}?api_key=${process.env.RIOT_KEY}`).then(response => response.json());
 
