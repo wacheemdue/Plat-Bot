@@ -29,10 +29,24 @@ client.on('message', async message => {
 
 	const command = args.shift().toLowerCase();
     // ...
+    if (command === 'help') {
+        const str = 
+            "!add [summoner name] Adds a player to the list." +
+            "\n!delete [summoner name] Deletes a player from the list." +
+            "\n!ranks Lists all added players and their ranks."
+        message.channel.send(str);
+    }
+
+
     if (command === 'add') {
         const ign = args.join(' ').toLowerCase();
         const info = await fetch(`https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${ign}?api_key=${process.env.RIOT_KEY}`).then(response => response.json());
-        players.set(ign, {id: info.id, profileIconId: info.profileIconId});
+        if(!players.has(ign)) {
+            players.set(ign, {id: info.id, profileIconId: info.profileIconId});
+        }
+        else {
+            message.channel.send('ERROR: player ' + ign + ' already exists!' );
+        }
     }
 
     if (command === 'delete') {
@@ -40,9 +54,12 @@ client.on('message', async message => {
         if (players.has(ign)) {
             players.delete(ign);
         }
+        else
+        {
+            message.channel.send('ERROR: player ' + ign + ' does not exist!');
+        }
         console.log(players);
     }
-
 
     if (command === 'ranks') {
         console.log(players);
@@ -55,6 +72,8 @@ client.on('message', async message => {
                     break;
                 }
             }
+        
+        //formatting and sending embedded image
         const {tier, rank, summonerName, leaguePoints} = soloq;
         const profIcon = players.get(summonerName.toLowerCase()).profileIconId;
 		const str = `${tier} ${rank} ${leaguePoints.toString()} lp`;
