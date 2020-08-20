@@ -39,11 +39,14 @@ client.on('message', async message => {
 
 
     if (command === 'add') {
-        const ign = args.join(' ').toLowerCase();
+        const ign = args.join('').toLowerCase();
         const info = await fetch(`https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${ign}?api_key=${process.env.RIOT_KEY}`).then(response => response.json());
-        if(!players.has(ign) || info.status == 200) {
+        if(!players.has(ign) || info.status === 200) {
             players.set(ign, {id: info.id, profileIconId: info.profileIconId});
             message.channel.send('Successfully added ' + ign + ".");
+        }
+        else if (info.status === 404) {
+            message.channel.send('ERROR: player does not exist.' );
         }
         else {
             message.channel.send('ERROR: player ' + ign + ' already exists.' );
@@ -51,7 +54,7 @@ client.on('message', async message => {
     }
 
     if (command === 'delete') {
-        const ign = args.join(' ').toLowerCase();
+        const ign = args.join('').toLowerCase();
         if (players.has(ign)) {
             players.delete(ign);
             message.channel.send('Successfully deleted ' + ign + ".");
