@@ -75,6 +75,9 @@ client.on('message', async message => {
 
     if (command === 'ranks') {
         console.log(global[message.guild.id]);
+        if (!(global[message.guild.id].length === 0)) {
+            message.channel.send('No summoners added.\n$help to see commands');
+        }
         global[message.guild.id].forEach( async (value, key) => {
             const info = await fetch(`https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/${value.id}?api_key=${process.env.RIOT_KEY}`).then(response => response.json());
             let soloq = {};
