@@ -90,6 +90,9 @@ client.on('message', async message => {
             const s = summonerName.toLowerCase().replace(/ /g,'');
             const profIcon = global[message.guild.id].get(s).profileIconId.toString();
             const str = `${tier} ${rank} ${leaguePoints.toString()} lp`;
+            const totalGames = wins + losses;
+            const winRate = (wins / totalGames) * 100;
+            const lossRate = (losses / totalGames) * 100;
             const embed = new MessageEmbed()
                 .setColor('#00c3ff')
                 .setTitle(str)
@@ -98,8 +101,7 @@ client.on('message', async message => {
                 `https://na.op.gg/summoner/userName=${summonerName.replace(/ /g, '+')}`)
                 .setDescription(`https://na.op.gg/summoner/userName=${summonerName.replace(/ /g, '+')}`)
                 .setThumbnail(tierPieces.get(tier))
-                .addField(`Total games: ${wins + losses}`, `Wins: ${wins} | Losses: ${losses}`);
-
+                .addField('Total games:' + totalGames, 'Wins(' + winRate.toFixed(1) + `%): ${wins} | Losses(` + lossRate.toFixed(1) + `%): ${losses}`);
             message.channel.send(embed);
         });
 	}
