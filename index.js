@@ -98,7 +98,7 @@ client.on('message', async message => {
                 `https://na.op.gg/summoner/userName=${summonerName.replace(/ /g, '+')}`)
                 .setDescription(`https://na.op.gg/summoner/userName=${summonerName.replace(/ /g, '+')}`)
                 .setThumbnail(tierPieces.get(tier))
-                .addField(`Total: ${wins + losses}`, `Wins: ${wins} | Losses: ${losses}`);
+                .addField(`Total games: ${wins + losses}`, `Wins: ${wins} | Losses: ${losses}`);
 
             message.channel.send(embed);
         });
