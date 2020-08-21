@@ -86,7 +86,7 @@ client.on('message', async message => {
             }
         
             //formatting and sending embedded image
-            const {tier, rank, summonerName, leaguePoints} = soloq;
+            const {tier, rank, summonerName, leaguePoints, wins, losses} = soloq;
             const s = summonerName.toLowerCase().replace(/ /g,'');
             const profIcon = global[message.guild.id].get(s).profileIconId.toString();
             const str = `${tier} ${rank} ${leaguePoints.toString()} lp`;
@@ -97,7 +97,8 @@ client.on('message', async message => {
                 `http://ddragon.leagueoflegends.com/cdn/10.16.1/img/profileicon/${profIcon}.png`,
                 `https://na.op.gg/summoner/userName=${summonerName.replace(/ /g, '+')}`)
                 .setDescription(`https://na.op.gg/summoner/userName=${summonerName.replace(/ /g, '+')}`)
-                .setThumbnail(tierPieces.get(tier));
+                .setThumbnail(tierPieces.get(tier))
+                .addField(`Total: ${wins + losses}`, `Wins: ${wins} | Losses: ${losses}`);
 
             message.channel.send(embed);
         });
