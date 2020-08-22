@@ -14,6 +14,6 @@ module.exports = async function(message, global, args) {
         message.channel.send('Successfully added!');
     }
     else {
-        message.channel.send('ERROR: player ' + ign + ' already exists.' );
+        message.channel.send('ERROR: player already added.' );
     }
 }
