@@ -1,5 +1,3 @@
-const { Client, MessageEmbed, DiscordAPIError, Channel } = require('discord.js');
-
 module.exports = function (message, global, args) {
     const ign = args.join('').toLowerCase();
     if (global[message.guild.id].has(ign)) {

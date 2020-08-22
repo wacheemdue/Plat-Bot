@@ -1,4 +1,4 @@
-const { Client, MessageEmbed, DiscordAPIError, Channel } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const fetch = require('node-fetch');
 
 let tierPieces = new Map();
@@ -28,15 +28,13 @@ module.exports =  async function(message, args) {
     
     //formatting and sending embedded image
     const {tier, rank, summonerName, leaguePoints, wins, losses} = soloq;
-    const s = summonerName.toLowerCase().replace(/ /g,'');
     const profIcon = profileIconId.toString();
-    const str = `${tier} ${rank} ${leaguePoints.toString()} lp`;
+    const rankDescrpt = `${tier} ${rank} ${leaguePoints.toString()} lp`;
     const totalGames = wins + losses;
     const winRate = (wins / totalGames) * 100;
-    const lossRate = (losses / totalGames) * 100;
     const embed = new MessageEmbed()
         .setColor('#00c3ff')
-        .setTitle(str)
+        .setTitle(rankDescrpt)
         .setAuthor(summonerName,
         `http://ddragon.leagueoflegends.com/cdn/10.16.1/img/profileicon/${profIcon}.png`,
         `https://na.op.gg/summoner/userName=${summonerName.replace(/ /g, '+')}`)

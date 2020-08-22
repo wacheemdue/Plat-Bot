@@ -11,9 +11,14 @@ Adds the summoner to the list of ranks to display.
 **$delete _[summoner name]_**
 Removes the summoner from the list of ranks to display.
 
+**$deleteall**
+Removes all summoners from the list of ranks to display.
+
 **$ranks**
 Displays the ranks of all added summoners.
 
+**$rank _[summoner name]_**
+Displays the rank of the given summoner.
 
 ### Hosted on Heroku at https://plat-bot.herokuapp.com/
 

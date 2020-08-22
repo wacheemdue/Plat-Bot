@@ -1,5 +1,3 @@
-const { Client, MessageEmbed, DiscordAPIError, Channel } = require('discord.js');
-
 module.exports = function(message) {
     const str = 
         "$add [summoner name] : Adds a player to the list." +
