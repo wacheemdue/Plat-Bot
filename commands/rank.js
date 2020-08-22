@@ -19,27 +19,44 @@ module.exports =  async function(message, args) {
     const id = idInfo.id;
     const profileIconId = idInfo.profileIconId;
     let soloq = {};
-    for (const element of info) {
-        if (element.queueType === 'RANKED_SOLO_5x5') {
-            soloq = element;
-            break;
-        }
+    //
+    if (info.length === 0) { //if player is UNRANKED
+        const {name} = await fetch(`https://na1.api.riotgames.com/lol/summoner/v4/summoners/${id}?api_key=${process.env.RIOT_KEY}`).then(response => response.json());
+        const sumNameLow = name.toLowerCase().replace(/ /g,'');
+        const profIcon = profileIconId.toString();
+        const embed = new MessageEmbed()
+            .setColor('#00c3ff')
+            .setTitle('UNRANKED')
+            .setAuthor(name,
+            `http://ddragon.leagueoflegends.com/cdn/10.16.1/img/profileicon/${profIcon}.png`,
+            `https://na.op.gg/summoner/userName=${name.replace(/ /g, '+')}`)
+            .setDescription(`https://na.op.gg/summoner/userName=${name.replace(/ /g, '+')}`)
+            .setThumbnail('https://strongsocials.com/wp-content/uploads/2019/08/omegalul-meaning-explanation.png');
+        message.channel.send(embed);
     }
-    
-    //formatting and sending embedded image
-    const {tier, rank, summonerName, leaguePoints, wins, losses} = soloq;
-    const profIcon = profileIconId.toString();
-    const rankDescrpt = `${tier} ${rank} ${leaguePoints.toString()} lp`;
-    const totalGames = wins + losses;
-    const winRate = (wins / totalGames) * 100;
-    const embed = new MessageEmbed()
-        .setColor('#00c3ff')
-        .setTitle(rankDescrpt)
-        .setAuthor(summonerName,
-        `http://ddragon.leagueoflegends.com/cdn/10.16.1/img/profileicon/${profIcon}.png`,
-        `https://na.op.gg/summoner/userName=${summonerName.replace(/ /g, '+')}`)
-        .setDescription(`https://na.op.gg/summoner/userName=${summonerName.replace(/ /g, '+')}`)
-        .setThumbnail(tierPieces.get(tier))
-        .addField('Total games: ' + totalGames + ' (Win ratio ' + winRate.toFixed(1) + '%)', `Wins: ${wins} | Losses : ${losses}`);
-    message.channel.send(embed);
+    //
+    else {
+        for (const element of info) {
+            if (element.queueType === 'RANKED_SOLO_5x5') {
+                soloq = element;
+                break;
+            }
+        }
+        //if player is RANKED
+        const {tier, rank, summonerName, leaguePoints, wins, losses} = soloq;
+        const profIcon = profileIconId.toString();
+        const rankDescrpt = `${tier} ${rank} ${leaguePoints.toString()} lp`;
+        const totalGames = wins + losses;
+        const winRate = (wins / totalGames) * 100;
+        const embed = new MessageEmbed()
+            .setColor('#00c3ff')
+            .setTitle(rankDescrpt)
+            .setAuthor(summonerName,
+            `http://ddragon.leagueoflegends.com/cdn/10.16.1/img/profileicon/${profIcon}.png`,
+            `https://na.op.gg/summoner/userName=${summonerName.replace(/ /g, '+')}`)
+            .setDescription(`https://na.op.gg/summoner/userName=${summonerName.replace(/ /g, '+')}`)
+            .setThumbnail(tierPieces.get(tier))
+            .addField('Total games: ' + totalGames + ' (Win ratio ' + winRate.toFixed(1) + '%)', `Wins: ${wins} | Losses : ${losses}`);
+        message.channel.send(embed);
+    }
 }
