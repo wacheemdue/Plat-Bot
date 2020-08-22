@@ -126,7 +126,7 @@ client.on('message', async message => {
         //formatting and sending embedded image
         const {tier, rank, summonerName, leaguePoints, wins, losses} = soloq;
         const s = summonerName.toLowerCase().replace(/ /g,'');
-        const profIcon = global[message.guild.id].get(s).profileIconId.toString();
+        const profIcon = profileIconId.toString();
         const str = `${tier} ${rank} ${leaguePoints.toString()} lp`;
         const totalGames = wins + losses;
         const winRate = (wins / totalGames) * 100;
